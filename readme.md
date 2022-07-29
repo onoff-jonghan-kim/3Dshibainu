@@ -4,7 +4,7 @@ This is a 3D shibainu.
 Drag your mouse and find shibainu's cute parts.
 
 ### Preview
-
+https://onoff-jonghan-kim.github.io/3Dshibainu/
 ![preview](./screenshot.png)
 
 ###### Specially thanks to the model provider.
