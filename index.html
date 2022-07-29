@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shibainu</title>
+</head>
+<body>
+  <div id="divContainer"></div>
+  
+  <script type="importmap" >
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.141.0/build/three.module.js",
+        "GLTFLoader" : "https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js",
+        "OrbitControls" : "https://unpkg.com/three@0.141.0/examples/jsm/controls/OrbitControls.js"
+      }
+    }
+  </script>
+<script type="module">
+    import {GLTFLoader} from 'GLTFLoader';
+    import * as THREE from 'three';
+    import {OrbitControls} from 'OrbitControls';
+
+    const divContainer = document.querySelector('#divContainer');
+    let scene = new THREE.Scene();
+    let renderer = new THREE.WebGLRenderer({
+      // canvas : document.querySelector('#canvas'),
+      antialias : true,
+    });
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.setPixelRatio(window.devicePixelRatio);
+    divContainer.appendChild(renderer.domElement);
+
+    let width = divContainer.clientWidth;
+    let height = divContainer.clientHeight;
+
+    let camera = new THREE.PerspectiveCamera(30, 1);
+    let controls = new OrbitControls(camera, renderer.domElement); 
+    camera.position.set(0,0,5);
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+
+
+    renderer.setSize(width, height);
+
+    scene.background = new THREE.Color('white');
+    let light = new THREE.DirectionalLight(0xfff00, 10);
+    scene.add(light);
+
+    let loader = new GLTFLoader();
+    loader.load('shiba/scene.gltf', function(gltf){
+      scene.add(gltf.scene);
+      function animate(){
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+        controls.update();
+      }
+      animate();
+    });
+
+  </script>
+  <style>
+    *{
+      outline: none;
+      margin: 0;
+    }
+    body{
+      overflow: hidden;
+    }
+    #divContainer{
+      position: absolute;
+      top:0;
+      left:0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</body>
+</html>
